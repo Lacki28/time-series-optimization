@@ -11,10 +11,10 @@ class Config:
     figure_name = None
 
     def __init__(self):
-        self.dir = ["./nb_results_mem/", "./arima_results_mem_(1, 0, 0)/", "./rf_results_mem_32_300/", "./lstm_results_mem/",
-                     "transformer_encoder_results_mem/"]
-        #self.dir =["./nb_results/", "./arima_results_(1, 0, 0)/", "./rf_results_32_300/", "./lstm_results/",
-        # "transformer_encoder_results/"]
+        self.dir = ["./nb_results_mem/", "./arima_results_mem_(1, 0, 0)/", "./rf_results_mem_16_200/", "./lstm_results_mem_final/",
+                      "transformer_encoder_results_mem_final/"]
+        # self.dir =["./nb_results/", "./arima_results_(1, 0, 0)/", "./rf_results_cpu_16_200/", "./lstm_results_cpu_final/",
+        # "transformer_encoder_results_cpu_final/"]
         self.title = ["Naïve Benchmark", "ARIMA", "RF", "LSTM", "Transformer"]
         self.figure_name = ["Naïve Benchmark", "ARIMA", "RF", "LSTM", "Transformer"]
         self.x_values = ["NB", "ARIMA", "RF", "LSTM", "Transformer"]
@@ -55,7 +55,7 @@ def create_boxplot(loss, loss_name, data_set):
             ax[timestamp - 1].set_xticklabels(config.x_values, rotation=45, ha='right',
                                               fontsize=20)  # Rotate x-axis labels for better visibility
         plt.savefig("./mem/"+loss_name+'_'+data_set + '_boxplot' + str(timestamp + i) + '.png')
-        plt.show()
+        # plt.show()
 
 
 def calc_avg(lst):
@@ -96,9 +96,9 @@ def get_avg_loss(data_set):
             list_of_total_time[dir + str(timestamp)] = total_time
     print(list_of_mse)
     print(len(list_of_mse))
-   # create_boxplot(list_of_mae, "MAE", data_set)
+    create_boxplot(list_of_mae, "MAE", data_set)
     create_boxplot(list_of_mse, "MSE", data_set)
-    #create_boxplot(list_of_rmse, "RMSE", data_set)
+    create_boxplot(list_of_rmse, "RMSE", data_set)
 
 
 def main():

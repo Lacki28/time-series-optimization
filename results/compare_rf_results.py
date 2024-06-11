@@ -13,7 +13,7 @@ class Config:
     def __init__(self, mode, start, end):
         self.mode = mode
         if self.mode == 'rf':
-            self.dir = "./rf_results"
+            self.dir = "./hyperparameter_results_new/rf/rf_results_cpu_tests"
             self.title = "RF"
             self.figure_name = "RF"
             self.start = start
@@ -65,23 +65,25 @@ def get_avg_loss(config, data_set):
     mae = []
     mse = []
     rmse = []
-    for i in (6, 7, 8, 9,  16, 20, 32):#range(config.start, config.end+1):
-        directory= config.dir+"_"+str(i)+"_300/"
-        for timestamp in range(1):
+    for i in (8, 16, 24, 32):#range(config.start, config.end+1):
+        directory= config.dir+"_"+str(i)+"_100/"
+        for timestamp in (1, 6):
             print(directory)
-            with open(directory+"statistics/" + data_set + str(timestamp + 1) + "_statistics" + ".txt", 'r') as file:
-                for line in file:
-                    test_error_values = line.split(' & ')
-                    if len(test_error_values)!=1:
-                        mae.append(float(test_error_values[0]))
-                        mse.append(float(test_error_values[1]))
-                        rmse.append(float(test_error_values[2]))
+            with open(directory+"statistics/" + data_set + str(timestamp) + "_statistics" + ".txt", 'r') as file:
+                line = file.readline()
+                line = file.readline()
+                # for line in file:
+                test_error_values = line.split(' & ')
+                if len(test_error_values)!=1:
+                    mae.append(float(test_error_values[0]))
+                    mse.append(float(test_error_values[1]))
+                    rmse.append(float(test_error_values[2]))
     print(mse)
 
 
 def main():
     config = Config("rf",6, 10)
-    get_avg_loss(config, "train")
+    get_avg_loss(config, "test")
     get_avg_loss(config,"validation")
     # get_avg_loss(config, "test")
 

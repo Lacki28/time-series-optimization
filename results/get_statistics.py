@@ -17,19 +17,19 @@ class Config:
             self.title = "Naive Benchmark"
             self.figure_name = "NB"
         elif self.mode == 'lstm':
-            self.dir = "./lstm_results_mem/"
+            self.dir = "lstm_results_mem_final/"
             self.title = "LSTM"
             self.figure_name = "LSTM"
         elif self.mode == 'transformer':
-            self.dir = "transformer_encoder_results_mem/"
+            self.dir = "transformer_encoder_results_mem_final/"
             self.title = "Transformer"
             self.figure_name = "Transformer"
         elif self.mode == 'rf':
-            self.dir = "./rf_results_mem_32_300/"
+            self.dir = "./rf_results_mem_16_200/"
             self.title = "RF"
             self.figure_name = "RF"
         elif self.mode == 'arima':
-            self.dir = "./arima_results_mem_(1, 0, 0)/"
+            self.dir = "./arima_results_(0, 0, 1)/"
             self.title = "ARIMA"
             self.figure_name = "ARIMA"
         else:
@@ -65,17 +65,23 @@ def create_boxplot(loss, loss_name, config, data_set):
 
 def calc_avg(lst):
     result = sum(lst) / len(lst)
-    rounded_result = round(result, 6)
-    return str(rounded_result)
+    formatted_result = "{:.4f}".format(result)
+    return str(formatted_result)
 
 
 def calc_std(lst):
     result = statistics.stdev(lst)
-    rounded_result = round(result, 6)
-    return str(rounded_result)
+    formatted_result = "{:.4f}".format(result)
+    return str(formatted_result)
 
 
-def get_avg_loss(config, data_set):
+def calc_median(lst):
+    lst.sort()
+    median_value = statistics.median(lst)
+    rounded_median = round(median_value, 6)
+    return str(rounded_median)
+
+def get_avg_loss(directory, data_set):
     list_of_mae = []
     list_of_mse = []
     list_of_rmse = []
@@ -87,7 +93,7 @@ def get_avg_loss(config, data_set):
         rmse = []
         nr = []
         total_time = []
-        with open(config.dir + data_set + str(timestamp + 1) + ".txt", 'r') as file:
+        with open(directory + data_set + str(timestamp + 1) + ".txt", 'r') as file:
             for line in file:
                 test_error_values = line.split(' & ')
                 mae.append(float(test_error_values[0]))
@@ -95,31 +101,40 @@ def get_avg_loss(config, data_set):
                 rmse.append(float(test_error_values[2]))
                 nr.append(float(test_error_values[3]))
                 total_time.append(float(test_error_values[4]))
-        directory_path = os.path.join(config.dir, "statistics")
+        directory_path = os.path.join(directory, "statistics_new")
         if not os.path.exists(directory_path):
             os.makedirs(directory_path)
-        with open(config.dir + "statistics/" + data_set + str(timestamp + 1) + "_statistics" + ".txt", 'a+') as file:
-            file.write("avg" + " \n")
-            file.write(calc_avg(mae) + " & " + calc_avg(mse) + " & " + calc_avg(rmse) + "\n")
-            file.write("std" + " \n")
-            file.write(calc_std(mae) + " & " + calc_std(mse) + " & " + calc_std(rmse) + " \n")
-            file.write(calc_avg(total_time) + " \n")
+        with open(directory + "statistics_new/" + data_set + "_statistics" + ".txt", 'a+') as file:
+            file.write(calc_avg(mse) + " & " + calc_std(mse) + " & ")
+            file.write(" \n")
+
+            # file.write("std" + " \n")
+            # file.write(calc_std(mae) + " & " + calc_std(mse) + " & " + calc_std(rmse) + " \n")
+            # file.write(calc_avg(total_time) + " \n")
         list_of_mae.append(mae)
         list_of_mse.append(mse)
         list_of_rmse.append(rmse)
         list_of_nr.append(nr)
         list_of_total_time.append(total_time)
-    create_boxplot(list_of_mae, "MAE", config, data_set)
-    create_boxplot(list_of_mse, "MSE", config, data_set)
-    create_boxplot(list_of_rmse, "RMSE", config, data_set)
+    # create_boxplot(list_of_mae, "MAE", config, data_set)
+    # create_boxplot(list_of_mse, "MSE", config, data_set)
+    # create_boxplot(list_of_rmse, "RMSE", config, data_set)
 
 
 def main():
-    config = Config("transformer")
-    get_avg_loss(config, "train")
-    get_avg_loss(config, "validation")
-    get_avg_loss(config, "test")
-
+    # get_avg_loss("lstm_results_cpu_final/", "train")
+    # get_avg_loss("lstm_results_cpu_final/", "validation")
+    # get_avg_loss("lstm_results_cpu_final/", "test")
+    mem_list= ["./nb_results_mem/", "lstm_results_mem_final/", "transformer_encoder_results_mem_final/", "./rf_results_mem_16_200/", "./arima_results_mem_(1, 0, 0)/"]
+    cpu_list= ["./nb_results/", "lstm_results_cpu_final/", "transformer_encoder_results_cpu_final/", "./rf_results_cpu_16_200/", "./arima_results_(1, 0, 0)/"]
+    for directory in mem_list:
+        get_avg_loss(directory, "train")
+        get_avg_loss(directory, "validation")
+        get_avg_loss(directory, "test")
+    for directory in cpu_list:
+        get_avg_loss(directory, "train")
+        get_avg_loss(directory, "validation")
+        get_avg_loss(directory, "test")
 
 if __name__ == "__main__":
     main()
