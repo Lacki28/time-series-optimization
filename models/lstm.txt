@@ -1,0 +1,8 @@
+Cpu
+t=6, sequence length=6, epochs=100
+u=128, l=1, lr=0.001, bs=32, ll=500
+Checkpoint(filesystem=local, path=/home/anna/ray_results/train_and_test_model_2023-11-14_13-15-41/train_and_test_model_874f4_00004_4_batch_size=32,layers=1,lin_layers=500,lr=0.0010,units=128_2023-11-14_13-15-41/checkpoint_000017)
+Mem
+t=6, sequence length=6, epochs=100
+u=64, l=1, lr=0.0001, bs=32, ll=500
+Checkpoint(filesystem=local, path=/home/anna/ray_results/train_and_test_model_2023-11-27_11-47-41/train_and_test_model_63bf1_00002_2_batch_size=32,layers=1,lin_layers=500,lr=0.0001,units=64_2023-11-27_11-47-41/checkpoint_000012)

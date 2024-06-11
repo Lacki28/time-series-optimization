@@ -1,0 +1,7 @@
+cpu, with filter
+dm=32, nh=4, df=64, nl=1, lr=0.001, bs=32
+Checkpoint(filesystem=local, path=/home/anna/ray_results/train_and_test_model_2024-01-05_18-01-16/train_and_test_model_09cde_00000_0_batch_size=32,d_model=32,dim_feedforward=64,lr=0.0010,nhead=4,num_layers=1_2024-01-05_18-01-16/checkpoint_000044)
+t=6, sequence length=6, epochs=100
+mem, with filter
+dm=32, nh=4, df=64, nl=1, lr=0.0001, bs=32
+Checkpoint(filesystem=local, path=/home/anna/ray_results/train_and_test_model_2024-01-06_11-48-38/train_and_test_model_26360_00002_2_batch_size=32,d_model=32,dim_feedforward=64,lr=0.0001,nhead=4,num_layers=1_2024-01-06_11-48-38/checkpoint_000026)
