@@ -27,7 +27,7 @@ class RegressionLSTM(nn.Module):
         self.t = t
 
         self.lstm = nn.LSTM(
-            num_features=num_features,
+            input_size=num_features,
             hidden_size=num_hidden_units,
             batch_first=True,
             bidirectional=False,
